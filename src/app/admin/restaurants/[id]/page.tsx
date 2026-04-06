@@ -1,10 +1,10 @@
 'use client'
 
-import { useEffect, useState, use } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 
 interface Category { id: string; name: string; _count: { items: number } }
-interface Item { id: string; name: string; thumbnailUrl: string | null }
 
 interface Restaurant {
   id: string
@@ -14,8 +14,9 @@ interface Restaurant {
   categories: Category[]
 }
 
-export default function RestaurantDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params)
+export default function RestaurantDetailPage() {
+  const params = useParams()
+  const id = params.id as string
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null)
   const [loading, setLoading] = useState(true)
   const [newCategory, setNewCategory] = useState('')
@@ -64,7 +65,6 @@ export default function RestaurantDetailPage({ params }: { params: Promise<{ id:
       </header>
 
       <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* Tabs */}
         <div className="flex gap-4 mb-6 border-b">
           <button onClick={() => setActiveTab('categories')} className={`pb-2 px-1 ${activeTab === 'categories' ? 'border-b-2 border-black font-medium' : 'text-gray-500'}`}>
             Categories ({restaurant.categories.length})
@@ -76,7 +76,6 @@ export default function RestaurantDetailPage({ params }: { params: Promise<{ id:
 
         {activeTab === 'categories' && (
           <div className="space-y-6">
-            {/* Add Category */}
             <form onSubmit={addCategory} className="card flex gap-4">
               <input
                 type="text"
@@ -88,7 +87,6 @@ export default function RestaurantDetailPage({ params }: { params: Promise<{ id:
               <button type="submit" className="btn btn-primary">Add</button>
             </form>
 
-            {/* Categories List */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {restaurant.categories.map((cat) => (
                 <div key={cat.id} className="card flex justify-between items-center">
