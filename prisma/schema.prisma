@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_URL")
+  directUrl = env("POSTGRES_PRISMA_URL")
+}
+
+model Restaurant {
+  id          String     @id @default(cuid())
+  name        String
+  slug        String     @unique
+  logo        String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  categories  Category[]
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  items        Item[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([restaurantId, name])
+}
+
+model Item {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  price       Float?
+  thumbnailUrl String?
+  modelGlbUrl  String?
+  modelUsdzUrl String?
+  qrCodeUrl    String?
+  categoryId  String
+  category     Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
