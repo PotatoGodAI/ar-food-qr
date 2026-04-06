@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { use } from 'next/navigation'
+import { useParams } from 'next/navigation'
 
 interface Item {
   id: string
@@ -14,8 +14,9 @@ interface Item {
   category: { name: string; restaurant: { name: string } }
 }
 
-export default function ARViewPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params)
+export default function ARViewPage() {
+  const params = useParams()
+  const id = params.id as string
   const [item, setItem] = useState<Item | null>(null)
   const [loading, setLoading] = useState(true)
   const [isIOS, setIsIOS] = useState(false)

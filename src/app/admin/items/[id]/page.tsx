@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter, use } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 interface Item {
@@ -16,8 +16,8 @@ interface Item {
   category: { id: string; name: string; restaurant: { name: string; id: string } }
 }
 
-export default function EditItemPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params)
+export default function EditItemPage({ params }: { params: { id: string } }) {
+  const { id } = params
   const router = useRouter()
   const [item, setItem] = useState<Item | null>(null)
   const [loading, setLoading] = useState(true)
